@@ -15,59 +15,8 @@ An MCP (Model Context Protocol) server implementation that integrates Claude wit
 ## Installation
 
 ```bash
-npm install -g @tsmztech/mcp-server-salesforce
+npm install -g @surajadsul02/mcp-server-salesforce
 ```
-
-## Tools
-
-### salesforce_search_objects
-Search for standard and custom objects:
-* Search by partial name matches
-* Finds both standard and custom objects
-* Example: "Find objects related to Account" will find Account, AccountHistory, etc.
-
-### salesforce_describe_object
-Get detailed object schema information:
-* Field definitions and properties
-* Relationship details
-* Picklist values
-* Example: "Show me all fields in the Account object"
-
-### salesforce_query_records
-Query records with relationship support:
-* Parent-to-child relationships
-* Child-to-parent relationships
-* Complex WHERE conditions
-* Example: "Get all Accounts with their related Contacts"
-
-### salesforce_dml_records
-Perform data operations:
-* Insert new records
-* Update existing records
-* Delete records
-* Upsert using external IDs
-* Example: "Update status of multiple accounts"
-
-### salesforce_manage_object
-Create and modify custom objects:
-* Create new custom objects
-* Update object properties
-* Configure sharing settings
-* Example: "Create a Customer Feedback object"
-
-### salesforce_manage_field
-Manage object fields:
-* Add new custom fields
-* Modify field properties
-* Create relationships
-* Example: "Add a Rating picklist field to Account"
-
-### salesforce_search_all
-Search across multiple objects:
-* SOSL-based search
-* Multiple object support
-* Field snippets
-* Example: "Search for 'cloud' across Accounts and Opportunities"
 
 ## Setup
 
@@ -77,49 +26,133 @@ You can authenticate with Salesforce using one of two methods:
 #### 1. Username/Password Authentication
 1. Set up your Salesforce credentials
 2. Get your security token (Reset from Salesforce Settings)
-3. Configure the following environment variables:
-   - `SALESFORCE_USERNAME`: Your Salesforce username
-   - `SALESFORCE_PASSWORD`: Your Salesforce password
-   - `SALESFORCE_TOKEN`: Your Salesforce security token
-   - `SALESFORCE_INSTANCE_URL`: Your org URL (Optional. Default: https://login.salesforce.com)
+3. Configure the environment variables as shown in the configuration section
 
 #### 2. OAuth2 Authentication with Consumer Key/Secret
 1. Set up a Connected App in Salesforce
 2. Get the Consumer Key and Consumer Secret
-3. Configure the following environment variables:
-   - `SALESFORCE_CONSUMER_KEY`: Your Connected App's consumer key
-   - `SALESFORCE_CONSUMER_SECRET`: Your Connected App's consumer secret
-   - `SALESFORCE_USERNAME`: Your Salesforce username
-   - `SALESFORCE_PASSWORD`: Your Salesforce password
-   - `SALESFORCE_INSTANCE_URL`: Your org URL (Optional. Default: https://login.salesforce.com)
+3. Configure the environment variables as shown in the configuration section
 
-Note: When using OAuth2 authentication, username and password are still required for the JWT bearer flow.
+### IDE Integration
 
-### Usage with Claude Desktop
+#### Cursor IDE Setup
 
-Add to your `claude_desktop_config.json`:
+1. Install the package globally:
+```bash
+npm install -g @surajadsul02/mcp-server-salesforce
+```
+
+2. Configure the MCP server in Cursor IDE:
+
+##### Method 1: Using Command with Environment Variables
+```json
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "SALESFORCE_USERNAME=your.actual.email@example.com SALESFORCE_PASSWORD=YourActualPassword123 SALESFORCE_TOKEN=YourActualSecurityToken123 SALESFORCE_INSTANCE_URL=https://login.salesforce.com npx",
+      "args": ["-y", "@surajadsul02/mcp-server-salesforce"]
+    }
+  }
+}
+```
+
+##### Method 2: Using env Command (Alternative)
+```json
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "env",
+      "args": [
+        "SALESFORCE_USERNAME=your.actual.email@example.com",
+        "SALESFORCE_PASSWORD=YourActualPassword123",
+        "SALESFORCE_TOKEN=YourActualSecurityToken123",
+        "SALESFORCE_INSTANCE_URL=https://login.salesforce.com",
+        "npx",
+        "-y",
+        "@surajadsul02/mcp-server-salesforce"
+      ]
+    }
+  }
+}
+```
+
+##### For OAuth2 Authentication in Cursor
+```json
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "SALESFORCE_USERNAME=your.actual.email@example.com SALESFORCE_PASSWORD=YourActualPassword123 SALESFORCE_CONSUMER_KEY=YourActualConsumerKey SALESFORCE_CONSUMER_SECRET=YourActualConsumerSecret SALESFORCE_INSTANCE_URL=https://login.salesforce.com npx",
+      "args": ["-y", "@surajadsul02/mcp-server-salesforce"]
+    }
+  }
+}
+```
+
+#### Claude Desktop Setup
+
+1. Install the package globally (if not already installed):
+```bash
+npm install -g @surajadsul02/mcp-server-salesforce
+```
+
+2. Add to your `claude_desktop_config.json`:
+
+##### For Username/Password Authentication
 ```json
 {
   "mcpServers": {
     "salesforce": {
       "command": "npx",
-      "args": ["-y", "@tsmztech/mcp-server-salesforce"],
+      "args": ["-y", "@surajadsul02/mcp-server-salesforce"],
       "env": {
-        // For Username/Password Authentication
         "SALESFORCE_USERNAME": "your_username",
         "SALESFORCE_PASSWORD": "your_password",
         "SALESFORCE_TOKEN": "your_security_token",
-        "SALESFORCE_INSTANCE_URL": "org_url",        // Optional. Default value: https://login.salesforce.com
-
-        // For OAuth2 Authentication (alternative)
-        "SALESFORCE_CONSUMER_KEY": "your_consumer_key",
-        "SALESFORCE_CONSUMER_SECRET": "your_consumer_secret"
-        // Username and password still required for OAuth2
+        "SALESFORCE_INSTANCE_URL": "https://login.salesforce.com"
       }
     }
   }
 }
 ```
+
+##### For OAuth2 Authentication
+```json
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "npx",
+      "args": ["-y", "@surajadsul02/mcp-server-salesforce"],
+      "env": {
+        "SALESFORCE_USERNAME": "your_username",
+        "SALESFORCE_PASSWORD": "your_password",
+        "SALESFORCE_CONSUMER_KEY": "your_consumer_key",
+        "SALESFORCE_CONSUMER_SECRET": "your_consumer_secret",
+        "SALESFORCE_INSTANCE_URL": "https://login.salesforce.com"
+      }
+    }
+  }
+}
+```
+
+3. Configuration File Location:
+   - macOS: `~/Library/Application Support/Claude Desktop/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude Desktop\claude_desktop_config.json`
+   - Linux: `~/.config/Claude Desktop/claude_desktop_config.json`
+
+### Required Environment Variables
+
+For Username/Password Authentication:
+- `SALESFORCE_USERNAME`: Your Salesforce username/email
+- `SALESFORCE_PASSWORD`: Your Salesforce password
+- `SALESFORCE_TOKEN`: Your Salesforce security token
+- `SALESFORCE_INSTANCE_URL`: Your Salesforce instance URL (Optional, default: https://login.salesforce.com)
+
+For OAuth2 Authentication:
+- `SALESFORCE_USERNAME`: Your Salesforce username/email
+- `SALESFORCE_PASSWORD`: Your Salesforce password
+- `SALESFORCE_CONSUMER_KEY`: Your Connected App's consumer key
+- `SALESFORCE_CONSUMER_SECRET`: Your Connected App's consumer secret
+- `SALESFORCE_INSTANCE_URL`: Your Salesforce instance URL (Optional, default: https://login.salesforce.com)
 
 ## Example Usage
 
@@ -163,7 +196,7 @@ Add to your `claude_desktop_config.json`:
 ### Building from source
 ```bash
 # Clone the repository
-git clone https://github.com/tsmztech/mcp-server-salesforce.git
+git clone https://github.com/surajadsul02/mcp-server-salesforce.git
 
 # Navigate to directory
 cd mcp-server-salesforce
@@ -175,6 +208,29 @@ npm install
 npm run build
 ```
 
+## Troubleshooting
+
+1. **Authentication Errors**
+   - Verify your credentials are correct
+   - For username/password auth: ensure security token is correct
+   - For OAuth2: verify consumer key and secret
+
+2. **Connection Issues**
+   - Check your Salesforce instance URL
+   - Verify network connectivity
+   - Ensure proper API access permissions
+
+3. **Cursor IDE Integration**
+   - Restart Cursor IDE after configuration changes
+   - Check Developer Tools (Help > Toggle Developer Tools) for error messages
+   - Verify the package is installed globally
+
+4. **Claude Desktop Integration**
+   - Verify configuration file location
+   - Check file permissions
+   - Restart Claude Desktop after configuration changes
+   - Ensure environment variables are properly set
+
 ## Contributing
 Contributions are welcome! Feel free to submit a Pull Request.
 
@@ -182,4 +238,4 @@ Contributions are welcome! Feel free to submit a Pull Request.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Issues and Support
-If you encounter any issues or need support, please file an issue on the [GitHub repository](https://github.com/tsmztech/mcp-server-salesforce/issues).
+If you encounter any issues or need support, please file an issue on the GitHub repository.

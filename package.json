@@ -1,6 +1,6 @@
 {
-    "name": "@surajadsul/mcp-server-salesforce",
-    "version": "0.0.1",
+    "name": "@surajadsul02/mcp-server-salesforce",
+    "version": "0.0.2",
     "description": "A Salesforce connector MCP Server.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -14,7 +14,8 @@
     "scripts": {
       "build": "tsc && shx chmod +x dist/*.js",
       "prepare": "npm run build",
-      "watch": "tsc --watch"
+      "watch": "tsc --watch",
+      "test:connection": "npm run build && node dist/test-connection.js"
     },
     "keywords": [
       "mcp",
@@ -22,7 +23,7 @@
       "claude",
       "ai"
     ],
-    "author": "tsmztech",
+    "author": "surajadsul02",
     "license": "MIT",
     "dependencies": {
       "@modelcontextprotocol/sdk": "0.5.0",

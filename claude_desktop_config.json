@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "salesforce": {
+      "command": "SALESFORCE_USERNAME=your.actual.email@example.com SALESFORCE_PASSWORD=YourActualPassword123 SALESFORCE_TOKEN=YourActualSecurityToken123 SALESFORCE_INSTANCE_URL=https://login.salesforce.com npx",
+      "args": ["-y", "@surajadsul02/mcp-server-salesforce"],
+      "env": {
+        "SALESFORCE_USERNAME": "your.actual.email@example.com",
+        "SALESFORCE_PASSWORD": "YourActualPassword123",
+        "SALESFORCE_TOKEN": "YourActualSecurityToken123",
+        "SALESFORCE_INSTANCE_URL": "https://login.salesforce.com",
+        "NODE_ENV": "production"
+      },
+      "cwd": "/Users/surajadsul/code/AI Projects/mcp-server-salesforce"
+    }
+  }
+} 
