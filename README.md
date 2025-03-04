@@ -72,8 +72,28 @@ Search across multiple objects:
 ## Setup
 
 ### Salesforce Authentication
+You can authenticate with Salesforce using one of two methods:
+
+#### 1. Username/Password Authentication
 1. Set up your Salesforce credentials
 2. Get your security token (Reset from Salesforce Settings)
+3. Configure the following environment variables:
+   - `SALESFORCE_USERNAME`: Your Salesforce username
+   - `SALESFORCE_PASSWORD`: Your Salesforce password
+   - `SALESFORCE_TOKEN`: Your Salesforce security token
+   - `SALESFORCE_INSTANCE_URL`: Your org URL (Optional. Default: https://login.salesforce.com)
+
+#### 2. OAuth2 Authentication with Consumer Key/Secret
+1. Set up a Connected App in Salesforce
+2. Get the Consumer Key and Consumer Secret
+3. Configure the following environment variables:
+   - `SALESFORCE_CONSUMER_KEY`: Your Connected App's consumer key
+   - `SALESFORCE_CONSUMER_SECRET`: Your Connected App's consumer secret
+   - `SALESFORCE_USERNAME`: Your Salesforce username
+   - `SALESFORCE_PASSWORD`: Your Salesforce password
+   - `SALESFORCE_INSTANCE_URL`: Your org URL (Optional. Default: https://login.salesforce.com)
+
+Note: When using OAuth2 authentication, username and password are still required for the JWT bearer flow.
 
 ### Usage with Claude Desktop
 
@@ -85,10 +105,16 @@ Add to your `claude_desktop_config.json`:
       "command": "npx",
       "args": ["-y", "@tsmztech/mcp-server-salesforce"],
       "env": {
+        // For Username/Password Authentication
         "SALESFORCE_USERNAME": "your_username",
         "SALESFORCE_PASSWORD": "your_password",
         "SALESFORCE_TOKEN": "your_security_token",
-        "SALESFORCE_INSTANCE_URL": "org_url"        // Optional. Default value: https://login.salesforce.com
+        "SALESFORCE_INSTANCE_URL": "org_url",        // Optional. Default value: https://login.salesforce.com
+
+        // For OAuth2 Authentication (alternative)
+        "SALESFORCE_CONSUMER_KEY": "your_consumer_key",
+        "SALESFORCE_CONSUMER_SECRET": "your_consumer_secret"
+        // Username and password still required for OAuth2
       }
     }
   }
