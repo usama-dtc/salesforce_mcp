@@ -42,21 +42,9 @@ You can authenticate with Salesforce using one of two methods:
 npm install -g @surajadsul02/mcp-server-salesforce
 ```
 
-2. Configure the MCP server in Cursor IDE:
+2. Configure the MCP server in Cursor IDE `.cursor/mcp.json`:
 
-##### Method 1: Using Command with Environment Variables
-```json
-{
-  "mcpServers": {
-    "salesforce": {
-      "command": "SALESFORCE_USERNAME=your.actual.email@example.com SALESFORCE_PASSWORD=YourActualPassword123 SALESFORCE_TOKEN=YourActualSecurityToken123 SALESFORCE_INSTANCE_URL=https://login.salesforce.com npx",
-      "args": ["-y", "@surajadsul02/mcp-server-salesforce"]
-    }
-  }
-}
-```
-
-##### Method 2: Using env Command (Alternative)
+##### Using env Command
 ```json
 {
   "mcpServers": {
@@ -81,8 +69,18 @@ npm install -g @surajadsul02/mcp-server-salesforce
 {
   "mcpServers": {
     "salesforce": {
-      "command": "SALESFORCE_USERNAME=your.actual.email@example.com SALESFORCE_PASSWORD=YourActualPassword123 SALESFORCE_CONSUMER_KEY=YourActualConsumerKey SALESFORCE_CONSUMER_SECRET=YourActualConsumerSecret SALESFORCE_INSTANCE_URL=https://login.salesforce.com npx",
-      "args": ["-y", "@surajadsul02/mcp-server-salesforce"]
+      "command": "env",
+      "args": [
+        "SALESFORCE_USERNAME=your.actual.email@example.com",
+        "SALESFORCE_PASSWORD=YourActualPassword123",
+        "SALESFORCE_TOKEN=YourActualSecurityToken123",
+        "SALESFORCE_INSTANCE_URL=https://login.salesforce.com",
+        "SALESFORCE_CONSUMER_KEY=YourConsumerKey",
+        "SALESFORCE_CONSUMER_SECRET=YourConsumerSecret",
+        "npx",
+        "-y",
+        "@surajadsul02/mcp-server-salesforce"
+      ]
     }
   }
 }
