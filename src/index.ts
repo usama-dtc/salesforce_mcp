@@ -16,6 +16,7 @@ import { DML_RECORDS, handleDMLRecords, DMLArgs } from "./tools/dml.js";
 import { MANAGE_OBJECT, handleManageObject, ManageObjectArgs } from "./tools/manageObject.js";
 import { MANAGE_FIELD, handleManageField, ManageFieldArgs } from "./tools/manageField.js";
 import { SEARCH_ALL, handleSearchAll, SearchAllArgs, WithClause } from "./tools/searchAll.js";
+import { UPLOAD_REPORT_XML, handleUploadReportXml, UploadReportXmlArgs } from "./tools/reportXml.js";
 
 dotenv.config();
 
@@ -40,7 +41,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     DML_RECORDS,
     MANAGE_OBJECT,
     MANAGE_FIELD,
-    SEARCH_ALL
+    SEARCH_ALL,
+    UPLOAD_REPORT_XML  // Add new tool to the list
   ],
 }));
 
@@ -169,6 +171,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         };
 
         return await handleSearchAll(conn, validatedArgs);
+      }
+
+      // Add the new handler for XML report upload
+      case "salesforce_upload_report_xml": {
+        const reportArgs = args as Record<string, unknown>;
+        if (!reportArgs.xmlContent) {
+          throw new Error('xmlContent is required for report XML upload');
+        }
+        
+        // Type check and conversion
+        const validatedArgs: UploadReportXmlArgs = {
+          reportName: reportArgs.reportName as string | undefined,
+          reportId: reportArgs.reportId as string | undefined,
+          folderId: reportArgs.folderId as string | undefined,
+          xmlContent: reportArgs.xmlContent as string,
+          isDeveloperName: reportArgs.isDeveloperName as boolean | undefined
+        };
+        
+        return await handleUploadReportXml(conn, validatedArgs);
       }
 
       default:
